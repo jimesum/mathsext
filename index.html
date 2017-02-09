@@ -1,33 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>test</title>
+<title>数学加减法测试</title>
 <meta name="keywords" content="test" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
-body { background: #f3f3f3;}
-table.altrowstable {
-	font-family: verdana,arial,sans-serif;
+* html, * html body { 
+	background: #f3f3f3; 
+	background-attachment:fixed 
+}
+table.mathtable {
+	font-family:"微软雅黑",Microsoft YaHei,Arial, Helvetica, sans-serif, "宋体";
 	font-size:20px;
 	color:#333333;
 	border-width: 1px;
 	border-color: #a9c6c9;
 	border-collapse: collapse;
 }
-table.altrowstable th {
+a:link, a:visited, a:hover, a:active{ 
+	font-family:"微软雅黑",Microsoft YaHei,Arial, Helvetica, sans-serif, "宋体";font-size:14px; 
+	text-decoration:none; 
+	outline:none;
+}
+table.mathtable th {
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
 	border-color: #a9c6c9;
 	text-align:center;
 }
-table.altrowstable td {
+table.mathtable td {
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
 	border-color: #a9c6c9;
 	min-width:150px;
-	text-align:center;
+	text-align:right;
 }
 .oddrowcolor{
 	background-color:#d4e3e5;
@@ -37,7 +45,7 @@ table.altrowstable td {
 }
 .content {
     margin: 0 auto;
-    width: 1140px;
+    width: 740px;
 }
 .tlf {
 	text-align:left;
@@ -45,20 +53,43 @@ table.altrowstable td {
 input {
 	font-size:18px;
 }
+.inright {
+	float:right;
+}
+.inleft {
+	float:left;
+}
+.subbtn {
+    margin-left: 50%;	
+	margin-bottom: 0;
+}
+.m15 {
+	margin-top: 15px;
+}
 </style>
 <!-- Javascript goes in the document HEAD -->
 <script type="text/javascript">
 var k_array;
+//生成需要的随机数字
 function generateRandom(min, max){
 	var c = max-min+1;  
     return Math.floor(Math.random() * c + min);
 }
-
-function generateContentStr(min, max){
+//生成页面内容
+function generateMathsContent(min, max) {
+	var outhtml = generatePlusContentStr(min, max);
+	outhtml += generateMinusContentStr(min, max);
+	outhtml += "<div class=\"subbtn\">"
+				+ "<input type=\"button\" value=\"提交批阅\" onclick=\"javascript:submitContent();\">"
+				+ "</div>";
+	return outhtml;
+}
+//加法
+function generatePlusContentStr(min, max){
 	min = min + 1;
 	max = max - 1;
-	var output = "<table class=\"altrowstable\" id=\"alternatecolor\">";
-	output += "<tr><th>算式</th><th>结果</th></tr>";
+	var output = "<table class=\"mathtable inleft\" id=\"plustable\">";
+	output += "<tr><th>加法运算</th><th>结果</th></tr>";
 	for(var i=0; i<10; i++){
 		var v1 = generateRandom(min, max);
 		var v2 = generateRandom(min, max-v1);
@@ -66,17 +97,34 @@ function generateContentStr(min, max){
 		if(k_array.hasOwnProperty(key)) {
 			i--;
 		} else {
-			output += "<tr><td>" + v1 + " + " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"10\"></td><td style=\"text-align:left;\"><span id=\"" + key + "_py\"></span></td></tr>";
+			output += "<tr><td>" + v1 + " + " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"6\"></td><td style=\"text-align:left;\"><span id=\"" + key + "_py\"></span></td></tr>";
 			k_array[key] = v1+v2;
 		}
 	}
-	output += "<tr><td colspan=3><input type=\"button\" value=\"提交批阅\" onclick=\"javascript:submitContent();\"></td></tr>";
 	output += "</table>";
 	return output;
 }
-
+//减法
+function generateMinusContentStr(min, max){
+	min = min + 1;
+	var output = "<table class=\"mathtable inright\" id=\"minustable\">";
+	output += "<tr><th>减法运算</th><th>结果</th></tr>";
+	for(var i=0; i<10; i++){
+		var v1 = generateRandom(min, max);
+		var v2 = generateRandom(min, max-v1);
+		var key = v1 + "-" + v2;
+		if(k_array.hasOwnProperty(key)) {
+			i--;
+		} else {
+			output += "<tr><td>" + v1 + " - " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"6\"></td><td style=\"text-align:left;\"><span id=\"" + key + "_py\"></span></td></tr>";
+			k_array[key] = v1-v2;
+		}
+	}
+	output += "</table>";
+	return output;
+}
+//提交批阅
 function submitContent() {
-	console.log(k_array);
 	var len = Object.keys(k_array).length;
 	for(var i=0; i<len; i++) {
 		var key = Object.keys(k_array)[i];
@@ -85,18 +133,15 @@ function submitContent() {
 		if(itemv == value){
 			document.getElementById(key+"_py").innerHTML="<font color=green>√</font>";
 		} else {
-			document.getElementById(key+"_py").innerHTML="<font color=red>×</font> (正确答案：" + value + ")";
+			document.getElementById(key+"_py").innerHTML="<font color=red>×</font> <span style=\"font-size:18px;\">(正确答案：" + value + ")</span>";
 		}
 	}
-	//console.log(document.getElementById(id))
 }
 
 function altRows(id){
 	if(document.getElementsByTagName){  
-		
-		var table = document.getElementById(id);  
-		var rows = table.getElementsByTagName("tr"); 
-		 
+		var table = document.getElementById(id);
+		var rows = table.getElementsByTagName("tr"); 	 
 		for(i = 0; i < rows.length; i++){          
 			if(i % 2 == 0){
 				rows[i].className = "evenrowcolor";
@@ -106,10 +151,12 @@ function altRows(id){
 		}
 	}
 }
+
 window.onload=function(){
 	k_array = new Array();
-	document.getElementById("content").innerHTML=generateContentStr(0, 10);
-	altRows('alternatecolor');
+	document.getElementById("content").innerHTML=generateMathsContent(0, 10);
+	altRows('plustable');
+	altRows('minustable');
 }
 </script>
 </head>
