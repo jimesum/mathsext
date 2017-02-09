@@ -60,8 +60,15 @@ input {
 	float:left;
 }
 .subbtn {
-    margin-left: 50%;	
-	margin-bottom: 0;
+    margin: 0 auto;
+	padding-top: 15px;
+	width: 50px;
+}
+.retCl {
+	width: 350px;
+	margin-left: -100px;
+	font-size:16px;
+	color:#30a3ff;
 }
 .m15 {
 	margin-top: 15px;
@@ -79,9 +86,6 @@ function generateRandom(min, max){
 function generateMathsContent(min, max) {
 	var outhtml = generatePlusContentStr(min, max);
 	outhtml += generateMinusContentStr(min, max);
-	outhtml += "<div class=\"subbtn\">"
-				+ "<input type=\"button\" value=\"提交批阅\" onclick=\"javascript:submitContent();\">"
-				+ "</div>";
 	return outhtml;
 }
 //加法
@@ -126,16 +130,27 @@ function generateMinusContentStr(min, max){
 //提交批阅
 function submitContent() {
 	var len = Object.keys(k_array).length;
+	var correct_ct = 0;
+	var wrong_ct = 0;
 	for(var i=0; i<len; i++) {
 		var key = Object.keys(k_array)[i];
 		var value = k_array[key];
 		var itemv = document.getElementById(key).value;
-		if(itemv == value){
+		if(itemv != "" && itemv == value){
 			document.getElementById(key+"_py").innerHTML="<font color=green>√</font>";
+			correct_ct++;
 		} else {
 			document.getElementById(key+"_py").innerHTML="<font color=red>×</font> <span style=\"font-size:18px;\">(正确答案：" + value + ")</span>";
+			wrong_ct++;
 		}
 	}
+	var message = "";
+	if(correct_ct === len) {
+		message = "恭喜你，全部正确，真棒！";
+	} else {
+		message = "您答对了 " + correct_ct + " 题， 答错了：" + wrong_ct + "题，还需继续努力！";
+	}
+	document.getElementById("retItem").innerHTML=message;
 }
 
 function altRows(id){
@@ -152,16 +167,24 @@ function altRows(id){
 	}
 }
 
+function generateBtnContent() {
+	var outhtml = "<input type=\"button\" class=\"m15\" value=\"提交批阅\" onclick=\"javascript:submitContent();\">";
+	outhtml += "<div class=\"retCl m15\" id=\"retItem\"></div>";
+	return outhtml;
+}
+
 window.onload=function(){
 	k_array = new Array();
 	document.getElementById("content").innerHTML=generateMathsContent(0, 10);
+	document.getElementById("btnDiv").innerHTML=generateBtnContent();
 	altRows('plustable');
 	altRows('minustable');
+	document.getElementById("retItem").innerHTML="";
 }
 </script>
 </head>
 <body>
-<div class="content" id='content'>
-</div>
+<div class="content" id='content'></div>
+<div class="subbtn" id='btnDiv'></div>
 </body>
 </html>
