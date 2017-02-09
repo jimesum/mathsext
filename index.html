@@ -120,7 +120,7 @@ function generateMinusContentStr(min, max){
 	output += "<tr><th>减法运算</th><th>结果</th></tr>";
 	for(var i=0; i<10; i++){
 		var v1 = generateRandom(min, max);
-		var v2 = generateRandom(min, max-v1);
+		var v2 = generateRandom(min, v1);
 		var key = v1 + "-" + v2;
 		if(k_array.hasOwnProperty(key)) {
 			i--;
