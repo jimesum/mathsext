@@ -103,6 +103,9 @@ input {
     width: 100px;
 	font-size:16px;
 }
+.p10 {
+	padding-left: 10px;
+}
 .m15 {
 	margin-top: 15px;
 }
@@ -134,7 +137,7 @@ function generatePlusContentStr(min, max){
 		if(k_array.hasOwnProperty(key)) {
 			i--;
 		} else {
-			output += "<tr><td>" + v1 + " + " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"6\"></td><td style=\"text-align:center;\"><span id=\"" + key + "_py\"></span></td></tr>";
+			output += "<tr><td>" + v1 + " + " + v2 + " = <input class=\"p10\" id=\"" + key + "\" type=\"text\" value=\"\" size=\"6\"></td><td style=\"text-align:center;\"><span id=\"" + key + "_py\"></span></td></tr>";
 			k_array[key] = v1+v2;
 		}
 	}
@@ -153,7 +156,7 @@ function generateMinusContentStr(min, max){
 		if(k_array.hasOwnProperty(key)) {
 			i--;
 		} else {
-			output += "<tr><td>" + v1 + " - " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"4\"></td><td style=\"text-align:center;\"><span id=\"" + key + "_py\"></span></td></tr>";
+			output += "<tr><td>" + v1 + " - " + v2 + " = <input class=\"p10\" id=\"" + key + "\" type=\"text\" value=\"\" size=\"4\"></td><td style=\"text-align:center;\"><span id=\"" + key + "_py\"></span></td></tr>";
 			k_array[key] = v1-v2;
 		}
 	}
