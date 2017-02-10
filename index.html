@@ -45,10 +45,13 @@ table.mathtable td {
 }
 .content {
     margin: 0 auto;
-    width: 740px;
+    width: 790px;
 }
 .tlf {
 	text-align:left;
+}
+.tct {
+	text-align:center;
 }
 input {
 	font-size:18px;
@@ -63,17 +66,42 @@ input {
     margin: 0 auto;
 	padding-top: 15px;
 	width: 50px;
+	clear:both;
 }
 .retCl {
 	width: 350px;
 	margin-left: -100px;
 	font-size:16px;
-	color:#30a3ff;
+	color:blue;
 }
-.menubtn {
+.tit {
     margin: 50px 0 15px;
     text-align: center;
 	font-size:28px;
+}
+.condition {
+	width: 790px;
+    margin: 0 auto;
+	padding: 10px 0;
+    text-align: left;
+	font-size:18px;
+}
+.optionInput {
+    background: #fff none repeat scroll 0 0;
+    color: #000;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 5px;
+    width: 160px;
+	font-size:16px;
+}
+.changeSubj {
+	margin-left: 20px;
+    color: #000;
+    line-height: 24px;
+    padding: 2px 5px;
+    width: 100px;
+	font-size:16px;
 }
 .m15 {
 	margin-top: 15px;
@@ -125,7 +153,7 @@ function generateMinusContentStr(min, max){
 		if(k_array.hasOwnProperty(key)) {
 			i--;
 		} else {
-			output += "<tr><td>" + v1 + " - " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"6\"></td><td style=\"text-align:left;\"><span id=\"" + key + "_py\"></span></td></tr>";
+			output += "<tr><td>" + v1 + " - " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"4\"></td><td style=\"text-align:center;\"><span id=\"" + key + "_py\"></span></td></tr>";
 			k_array[key] = v1-v2;
 		}
 	}
@@ -153,7 +181,7 @@ function submitContent() {
 	if(correct_ct === len) {
 		message = "恭喜你，全部正确，真棒！";
 	} else {
-		message = "您答对了 " + correct_ct + " 题， 答错了：" + wrong_ct + "题，还需继续努力！";
+		message = "您答对了 " + correct_ct + " 题， 答错了 " + wrong_ct + " 题，还需继续努力！";
 	}
 	document.getElementById("retItem").innerHTML=message;
 }
@@ -178,18 +206,48 @@ function generateBtnContent() {
 	return outhtml;
 }
 
-window.onload=function(){
+function changeCondition() {
+	var sValue = document.getElementById("selectValue").value;
+	var v_array = new Array();
+	v_array['1'] = [0, 10];
+	v_array['2'] = [0, 100];
+	v_array['3'] = [10, 50];
+	v_array['4'] = [50, 100];
+	v_array['5'] = [100, 1000];
+	var selected = v_array[sValue];
+	generatePage(selected[0], selected[1]);
+}
+
+function generatePage(min, max) {
 	k_array = new Array();
-	document.getElementById("content").innerHTML=generateMathsContent(0, 10);
+	document.getElementById("content").innerHTML=generateMathsContent(min, max);
 	document.getElementById("btnDiv").innerHTML=generateBtnContent();
 	altRows('plustable');
 	altRows('minustable');
 	document.getElementById("retItem").innerHTML="";
 }
+function changeSubject() {
+	changeCondition();
+}
+window.onload=function(){
+	generatePage(0, 10);
+}
+
 </script>
 </head>
 <body>
-<div class="menubtn">加减法测试</div>
+<div class="tit">加减法测试</div>
+<div class="condition">
+	选择运算范围：
+	<select class="optionInput" id="selectValue" onchange="javascript:changeCondition();">
+		<option value="1">0~10</option>
+		<option value="2">0~100</option>
+		<option value="3">10~50</option>
+		<option value="4">50~100</option>
+		<option value="5">100~1000</option>
+	</select>
+	<input type="button" class="changeSubj" value="换题" onclick="javascript:changeSubject();">
+</div>
 <div class="content" id='content'></div>
 <div class="subbtn" id='btnDiv'></div>
 </body>
