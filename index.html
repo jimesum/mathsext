@@ -134,7 +134,7 @@ function generatePlusContentStr(min, max){
 		if(k_array.hasOwnProperty(key)) {
 			i--;
 		} else {
-			output += "<tr><td>" + v1 + " + " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"6\"></td><td style=\"text-align:left;\"><span id=\"" + key + "_py\"></span></td></tr>";
+			output += "<tr><td>" + v1 + " + " + v2 + " = <input id=\"" + key + "\" type=\"text\" value=\"\" size=\"6\"></td><td style=\"text-align:center;\"><span id=\"" + key + "_py\"></span></td></tr>";
 			k_array[key] = v1+v2;
 		}
 	}
